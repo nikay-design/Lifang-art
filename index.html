@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>丽芳的画 | Lifang's Art. All rights reserved</title>
+  <meta name="description" content="一组精选画作作品集" />
+  <style>
+    :root { --maxw: 1100px; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: #fff;
+      color: #222;
+      line-height: 1.6;
+    }
+    header { max-width: var(--maxw); margin: 32px auto 12px; padding: 0 16px; }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    .sub { color: #666; font-size: 14px; }
+    .bio { max-width: var(--maxw); margin: 8px auto 24px; padding: 0 16px; color: #444; }
+    .gallery {
+      max-width: var(--maxw); margin: 0 auto 64px; padding: 0 10px 0 16px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px;
+    }
+    figure { margin: 0; background: #f6f6f6; border: 1px solid #eee; border-radius: 6px; overflow: hidden; }
+    figure img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+    figcaption { padding: 8px 10px 10px; font-size: 14px; color: #555; }
+    footer {
+      max-width: var(--maxw); margin: 24px auto 40px; padding: 0 16px; color: #777; font-size: 13px;
+      display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
+      border-top: 1px solid #eee; padding-top: 16px;
+    }
+    .contact a { color: inherit; }
+    dialog#lightbox { border: none; padding: 0; width: min(96vw, 1100px); }
+    dialog::backdrop { background: rgba(0,0,0,.6); }
+    .lb-wrap { position: relative; }
+    .lb-img { width: 100%; height: auto; display: block; }
+    .lb-cap { padding: 8px 12px; color: #fff; background: #111; font-size: 14px; }
+    .lb-close { position: absolute; top: 8px; right: 8px; border: 0; background: rgba(0,0,0,.5); color: #fff; padding: 6px 10px; border-radius: 4px; cursor: pointer; }
+    @media (prefers-color-scheme: dark) {
+      body { background: #111; color: #eaeaea; }
+      .sub, .bio, figcaption, footer { color: #bbb; }
+      figure { background: #1a1a1a; border-color: #222; }
+      footer { border-top-color: #222; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>丽芳的画～ Lifang's artworks</h1>
+    <div class="sub">精选作品</div>
+  </header>
+  <div class="bio">
+    <p>双击查看大图。欢迎联系获取高清大图或原作信息。</p>
+  </div>
+
+  <main class="gallery" id="gallery"></main>
+
+  <footer>
+    <div>© <span id="year"></span> Lifang's art. All rights reserved</div>
+    <div class="contact">联系：<a href="mailto:737646036@qq.com">737646036@qq.com</a></div>
+  </footer>
+
+  <dialog id="lightbox">
+    <div class="lb-wrap">
+      <button class="lb-close" onclick="document.getElementById('lightbox').close()">关闭</button>
+      <img class="lb-img" id="lbImg" alt="" />
+      <div class="lb-cap" id="lbCap"></div>
+    </div>
+  </dialog>
+
+  <script>
+    const data = [
+      {src:'images/painting1.jpg', title:'春月', size:''},
+      {src:'images/painting2.jpg', title:'报春图', size:''},
+      {src:'images/painting3.jpg', title:'春月2', size:''},
+      {src:'images/painting4.jpg', title:'无题', size:''},
+      {src:'images/painting5.jpg', title:'报春图2', size:''},
+      {src:'images/painting6.jpg', title:'作品六', size:''},
+      {src:'images/painting7.jpg', title:'锦上添花', size:''},
+      {src:'images/painting8.jpg', title:'傲霜', size:''},
+    ];
+
+    const gallery = document.getElementById('gallery');
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCap = document.getElementById('lbCap');
+    const year = document.getElementById('year');
+    year.textContent = new Date().getFullYear();
+
+    function itemTemplate(it) {
+      const fig = document.createElement('figure');
+      const img = document.createElement('img');
+      img.src = it.src;
+      img.alt = it.title || 'artwork';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.addEventListener('click', () => {
+        lbImg.src = it.src;
+        lbImg.alt = it.title || '';
+        lbCap.textContent = it.title ? (it.size ? it.title + ' · ' + it.size : it.title) : (it.size || '');
+        lb.showModal();
+      });
+      const cap = document.createElement('figcaption');
+      cap.textContent = it.title ? (it.size ? it.title + ' · ' + it.size : it.title) : (it.size || '');
+      fig.appendChild(img);
+      fig.appendChild(cap);
+      return fig;
+    }
+
+    data.forEach(it => gallery.appendChild(itemTemplate(it)));
+  </script>
+</body>
+</html>
